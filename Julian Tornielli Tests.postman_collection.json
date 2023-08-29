@@ -1,0 +1,291 @@
+{
+	"info": {
+		"_postman_id": "b28d8167-4799-4515-bafd-fe579d0954e3",
+		"name": "Julian Tornielli Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29370847",
+		"_collection_link": "https://www.postman.com/science-specialist-85062548/workspace/petshop/collection/29370847-b28d8167-4799-4515-bafd-fe579d0954e3?action=share&source=collection_link&creator=29370847"
+	},
+	"item": [
+		{
+			"name": "UserLogin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Token should not be empty\r",
+							"pm.test(\"Token is not empty\", function () {\r",
+							"    const token = pm.response.json().token;\r",
+							"    pm.expect(token).to.not.be.empty;\r",
+							"});\r",
+							"\r",
+							"//Verify regular 200 response\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/user/login?username=jtornielli&password=1234",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "jtornielli"
+						},
+						{
+							"key": "password",
+							"value": "1234"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get available pets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Status is required, this would verify if that is the case\r",
+							"pm.test(\"Status field is present\", function () {\r",
+							"    pm.response.to.have.jsonBody('status');\r",
+							"});\r",
+							"\r",
+							"//verify correct 200 response\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/pet/findByStatus?status=available",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet",
+						"findByStatus"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "available"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Verify order id in the body\r",
+							"pm.test(\"Order ID is present\", function () {\r",
+							"    pm.response.to.have.jsonBody('id');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 0,\r\n  \"petId\": 1807,\r\n  \"quantity\": 1,\r\n  \"shipDate\": \"2023-08-28T23:15:35.210Z\",\r\n  \"status\": \"placed\",\r\n  \"complete\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/store/order",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"store",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Data for Available Pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Verify correct 200 response\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify available status in the pet requested\r",
+							"pm.test(\"Status is 'available'\", function () {\r",
+							"    const status = pm.response.json().status;\r",
+							"    pm.expect(status).to.equal(\"available\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/pet/9223372036854317649",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet",
+						"9223372036854317649"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Verificar que la respuesta tenga un código de estado 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verifiy success message with user ID\r",
+							"pm.test(\"User updated message\", function () {\r",
+							"    pm.response.to.have.jsonBody('message', '9223372036854775807');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 0,\r\n  \"username\": \"jtornielli\",\r\n  \"firstName\": \"Julian\",\r\n  \"lastName\": \"tornielli\",\r\n  \"email\": \"mail@mail.com\",\r\n  \"password\": \"1234\",\r\n  \"phone\": \"1234\",\r\n  \"userStatus\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/user/jtornielli",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"jtornielli"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Verify 200 response\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verificar que la respuesta confirma el cierre de sesión del usuario\r",
+							"pm.test(\"User logout message\", function () {\r",
+							"    pm.response.to.have.jsonBody('message', 'ok');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/user/logout",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://petstore.swagger.io/v2",
+			"type": "string"
+		}
+	]
+}
